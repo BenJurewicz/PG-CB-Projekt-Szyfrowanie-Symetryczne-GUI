@@ -1,13 +1,49 @@
+use dioxus::html::{FileEngine, HasFileData};
 use dioxus::prelude::*;
+use std::sync::Arc;
 
 struct UploadedFile {
     name: String,
-    contents: String,
+    contents: Vec<u8>,
+}
+
+impl UploadedFile {
+    fn bin_as_hex_string(&self) -> String {
+        self.contents
+            .iter()
+            .map(|&byte| format!("0x{:02x}", byte))
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
+    fn content_as_string(&self) -> String {
+        String::from_utf8_lossy(&self.contents).to_string()
+    }
 }
 
 /// The Home page component that will be rendered when the current route is `[Route::Home]`
 #[component]
 pub fn Home() -> Element {
+    let mut files_uploaded = use_signal(|| Vec::new() as Vec<UploadedFile>);
+
+    let read_files = move |file_engine: Arc<dyn FileEngine>| async move {
+        let files = file_engine.files();
+        files_uploaded.clear();
+        for file_name in &files {
+            if let Some(contents) = file_engine.read_file(file_name).await {
+                files_uploaded.write().push(UploadedFile {
+                    name: file_name.clone(),
+                    contents,
+                });
+            }
+        }
+    };
+
+    let upload_files = move |evt: FormEvent| async move {
+        if let Some(file_engine) = evt.files() {
+            read_files(file_engine).await;
+        }
+    };
+
     let handle_download = move |_| {
         // Your binary data
         let binary_data: Vec<u8> = vec![
@@ -55,10 +91,37 @@ pub fn Home() -> Element {
         h1 {
             class: "text-4xl font-bold text-center my-8",
         }
+
         button {
             class: "btn btn-primary ml-4",
             onclick: handle_download,
             "Download File"
+        }
+
+        div {
+            class: "m-2",
+            h1 { "File Upload Example" }
+            button { onclick: move |_| files_uploaded.write().clear(), "Clear files" }
+            fieldset {
+                legend { class: "fieldset-legend", "Upload text/rust files and read them" }
+                input {
+                    class: "file-input",
+                    r#type: "file",
+                    onchange: upload_files,
+                }
+            }
+
+            for file in files_uploaded.read().iter().rev() {
+                div {
+                    class: "card card-border bg-base-300 m-4 max-w-lg",
+                    div {
+                        class: "card-body",
+                        span { class:"card-title text-primary-content", "{file.name}" }
+                        pre  { class: "text-wrap text-secondary", "{file.content_as_string()}"  }
+                        pre  { class: "text-wrap text-accent", "{file.bin_as_hex_string()}" }
+                    }
+                }
+            }
         }
     }
 }

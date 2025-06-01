@@ -1,6 +1,10 @@
 [application]
 
 [web.app]
+# NOTE:
+# Uncomment when deploying to web
+# Comment for desktop and mobile
+base_path = "/szyfrowanie-symetryczne"
 
 # HTML title tag content
 title = "cb-gui"

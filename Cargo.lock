@@ -381,7 +381,6 @@ dependencies = [
 name = "cb-gui"
 version = "0.1.0"
 dependencies = [
- "base64",
  "dioxus",
  "rfd 0.15.3",
 ]

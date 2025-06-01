@@ -1,7 +1,6 @@
-use dioxus::html::FileEngine;
+use dioxus::logger::tracing;
 use dioxus::prelude::*;
 use rfd::AsyncFileDialog;
-use std::sync::Arc;
 
 struct UploadedFile {
     name: String,
@@ -29,6 +28,7 @@ pub fn Home() -> Element {
     rsx! {
                 h1 {
                     class: "text-4xl font-bold text-center my-8",
+                    "File Upload and Download Example"
                 }
 
                 button {
@@ -42,7 +42,9 @@ pub fn Home() -> Element {
                             return;
                         }
                         let file = file.unwrap();
-                        file.write(b"Hello, this is a test file for download!").await.expect("TODO: panic message");
+                        if let Err(e) = file.write(b"Hello, this is a test file for download!").await {
+                            tracing::error!("Failed to write file: {}", e);
+                        }
                     },
                     "Download File"
                 }
@@ -85,8 +87,8 @@ pub fn Home() -> Element {
                     }
 
                     details {
-                        class: "mt-4",
-                        summary { class: "cursor-pointer font-semibold text-sm", "Hex view" }
+                        class: "collapse collapse-arrow bg-base-100 border-base-300 border",
+                        summary { class: "collapse-title font-semibold", "Hex View" }
                         div {
                             class: "bg-base-200 rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
                             pre { class: "text-wrap text-accent break-all", "{file.bin_as_hex_string()}" }

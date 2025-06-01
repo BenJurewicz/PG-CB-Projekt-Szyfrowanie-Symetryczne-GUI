@@ -2,26 +2,28 @@ use crate::Route;
 use dioxus::prelude::*;
 
 /// The Navbar component that will be rendered on all pages of our app since every page is under the layout.
-///
-///
-/// This layout component wraps the UI of [Route::Home] and [Route::Blog] in a common navbar. The contents of the Home and Blog
-/// routes will be rendered under the outlet inside this component
 #[component]
 pub fn Navbar() -> Element {
+    let btn_active_style = "btn-primary pointer-events-none";
+    let btn_style = "btn text-xl join-item btn-soft";
+
     rsx! {
         div {
             class: "navbar bg-base-100 shadow-lg justify-center",
             div {
-                class: "navbar-center",
+                class: "navbar-center join",
+                // TODO: Probbably this should be a for loop over tuple of routes and vecs
                 Link {
-                    to: Route::Home {},
-                    class: "btn btn-ghost text-xl",
-                    "Home"
+                    to: Route::File {},
+                    active_class: btn_active_style,
+                    class: btn_style,
+                    "File"
                 }
                 Link {
-                    to: Route::Blog { id: 1 },
-                    class: "btn btn-ghost text-xl",
-                    "Blog"
+                    to: Route::Text {},
+                    active_class: btn_active_style,
+                    class: btn_style,
+                    "Text"
                 }
             }
         }

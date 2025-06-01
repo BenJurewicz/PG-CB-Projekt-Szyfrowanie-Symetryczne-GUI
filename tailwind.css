@@ -1,10 +1,10 @@
 @import "tailwindcss";
-@plugin "daisyui"{
+
+@plugin "daisyui" {
     themes: dark --default;
 }
 
 @source "./src/**.{rs}";
-
 
 /*noinspection CssInvalidPropertyValue*/
 @plugin "daisyui/theme" {
@@ -40,4 +40,25 @@
     --border: 1px;
     --depth: 1;
     --noise: 0;
+}
+
+/* Styling for the Rust File Dialog (RFD) */
+
+#rfd-card {
+    @apply flex flex-col gap-4 w-[25rem] justify-center items-center;
+    border-radius: var(--radius-box) !important;
+    background-color: var(--color-base-300) !important;
+}
+
+#rfd-output {
+    @apply btn btn-primary text-xl capitalize;
+}
+
+#rfd-button {
+    @apply btn btn-soft btn-secondary text-xl;
+    width: 5rem !important;
+}
+
+#rfd-input {
+    @apply file-input file-input-primary file-input-ghost;
 }

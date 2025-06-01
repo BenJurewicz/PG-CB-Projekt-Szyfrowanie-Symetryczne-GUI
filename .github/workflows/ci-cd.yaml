@@ -1,0 +1,87 @@
+name: Rust WASM CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job to check compilation before merging (for pull requests)
+  compile-check:
+    # Only run this job for pull requests targeting the main branch
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+
+      - name: Install cargo-binstall
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+
+      - name: Install dioxus-cli
+        run: cargo binstall dioxus-cli --no-confirm
+
+      - name: Run build command
+        run: npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css && dx bundle --platform web --out-dir web-app
+        working-directory: ./
+
+  # Job to compile and deploy to GitHub Pages (after merge to main)
+  deploy-to-pages:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: compile-check
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+
+      - name: Install cargo-binstall
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
+      - name: Install dioxus-cli
+        run: cargo binstall dioxus-cli --no-confirm
+
+      - name: Compile Rust to WebAssembly (Release)
+        run: npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css && dx bundle --platform web --out-dir web-app
+        working-directory: ./
+
+      - name: Deploy to GitHub Pages
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+        with:
+          # The output directory from `dx bundle` command
+          source-directory: 'web-app'
+          destination-github-username: 'BenJurewicz'
+          destination-repository-name: 'benjurewicz.github.io'
+          user-email: 'benjamin.jurewicz204@gmail.com'
+          target-branch: 'main'
+          target-directory: 'szyfrowanie-symetryczne'
+          commit-message: 'Automated deployment for PG-PT-Projekt-Szyfrowanie-Symetryczne-GUI (via GitHub Actions)'

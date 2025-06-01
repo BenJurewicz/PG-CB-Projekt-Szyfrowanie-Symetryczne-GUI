@@ -49,7 +49,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
         with:
           # The output directory from `dx bundle` command
-          source-directory: 'web-app'
+          source-directory: 'web-app/public'
           destination-github-username: 'BenJurewicz'
           destination-repository-name: 'benjurewicz.github.io'
           user-email: 'benjamin.jurewicz204@gmail.com'

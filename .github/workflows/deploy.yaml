@@ -1,55 +1,11 @@
-name: Deploy to Github Pages CI/CD
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  # Job to check compilation before merging (for pull requests)
-  compile-check:
-    # Only run this job for pull requests targeting the main branch
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Node.js dependencies
-        run: npm install
-        working-directory: ./
-
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-          target: wasm32-unknown-unknown
-
-      - name: Install cargo-binstall
-        run: |
-          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-
-
-      - name: Install dioxus-cli
-        run: cargo binstall dioxus-cli --no-confirm
-
-      - name: Generate tailwind file
-        run: npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css
-        working-directory: ./
-
-      - name: Compile and bundle the project
-        run: dx bundle --platform web --out-dir web-app
-        working-directory: ./
-
-  # Job to compile and deploy to GitHub Pages (after merge to main)
   deploy-to-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

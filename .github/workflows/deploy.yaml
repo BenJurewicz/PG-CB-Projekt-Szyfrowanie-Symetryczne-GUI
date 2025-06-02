@@ -50,7 +50,7 @@ jobs:
 
       - name: 'Debug: List artifacts for the found run ID'
         run: |
-          gh run view ${{ steps.get_workflow_run_id.outputs.run_id }} --json artifacts --jq '.artifacts'
+          gh run view ${{ steps.get_workflow_run_id.outputs.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,6 +60,7 @@ jobs:
         with:
           name: bundled-web-app
           run-id: ${{ steps.get_workflow_run_id.outputs.run_id }}
+          path: .
 
       - name: Check if artifact was downloaded
         id: check_artifact

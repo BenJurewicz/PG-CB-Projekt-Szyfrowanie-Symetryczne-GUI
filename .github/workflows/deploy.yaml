@@ -11,6 +11,9 @@ jobs:
   deploy-to-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
@@ -39,6 +42,15 @@ jobs:
             const latestRunId = runs.data.workflow_runs[0].id;
             console.log(`Latest successful build workflow run ID: ${latestRunId}`);
             core.setOutput('run_id', latestRunId);
+            
+            console.log('Full workflow run data:');
+            console.log(JSON.stringify(runs.data.workflow_runs[0], null, 2));
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Debug: List artifacts for the found run ID'
+        run: |
+          gh run view ${{ steps.get_workflow_run_id.outputs.run_id }} --json artifacts -q '.artifacts'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

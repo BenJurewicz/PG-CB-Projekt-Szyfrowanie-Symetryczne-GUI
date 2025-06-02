@@ -44,3 +44,11 @@ jobs:
       - name: Compile and bundle the project
         run: dx bundle --platform web --out-dir web-app
         working-directory: ./
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundled-web-app
+          path: |
+            web-app/
+          retention-days: 1

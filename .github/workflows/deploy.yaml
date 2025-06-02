@@ -1,5 +1,7 @@
 name: Deploy to GitHub Pages
 
+# TODO: Add code that will make sure that `base_path = "/szyfrowanie-symetryczne"` is uncommented in `Dioxus.toml` file before building the project.
+
 on:
   push:
     branches:
@@ -13,35 +15,66 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
 
+      - name: Download build artifacts
+        id: download_artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bundled-web-app
+
+      - name: Check if artifact was downloaded
+        id: check_artifact
+        run: |
+          if [ -d "bundled-web-app" ]; then
+            echo "build_found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "build_found=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js
+        if: steps.check_artifact.outputs.build_found == 'false'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install Node.js dependencies
+        if: steps.check_artifact.outputs.build_found == 'false'
         run: npm install
         working-directory: ./
 
       - name: Setup Rust toolchain
+        if: steps.check_artifact.outputs.build_found == 'false'
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
           target: wasm32-unknown-unknown
 
       - name: Install cargo-binstall
+        if: steps.check_artifact.outputs.build_found == 'false'
         run: |
           curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
       - name: Install dioxus-cli
+        if: steps.check_artifact.outputs.build_found == 'false'
         run: cargo binstall dioxus-cli --no-confirm
 
       - name: Generate tailwind file
+        if: steps.check_artifact.outputs.build_found == 'false'
         run: npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css
         working-directory: ./
 
       - name: Compile and bundle the project
+        if: steps.check_artifact.outputs.build_found == 'false'
         run: dx bundle --platform web --out-dir web-app
         working-directory: ./
+
+      - name: Prepare for deployment
+        run: |
+          if [ -d "bundled-web-app" ]; then
+            echo "Using downloaded build for deployment."
+            cp -R bundled-web-app/* web-app/
+          else
+            echo "Using freshly built application for deployment."
+          fi
 
       - name: Deploy to GitHub Pages
         uses: cpina/github-action-push-to-another-repository@main

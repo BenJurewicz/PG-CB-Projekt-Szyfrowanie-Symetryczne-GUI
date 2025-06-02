@@ -42,9 +42,6 @@ jobs:
             const latestRunId = runs.data.workflow_runs[0].id;
             console.log(`Latest successful build workflow run ID: ${latestRunId}`);
             core.setOutput('run_id', latestRunId);
-            
-            console.log('Full workflow run data:');
-            console.log(JSON.stringify(runs.data.workflow_runs[0], null, 2));
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -56,11 +53,13 @@ jobs:
 
       - name: Download build artifacts
         id: download_artifact
+        #run: gh run download ${{ steps.get_workflow_run_id.outputs.run_id }} --name bundled-web-app --dir bundled-web-app
         uses: actions/download-artifact@v4
         with:
           name: bundled-web-app
           run-id: ${{ steps.get_workflow_run_id.outputs.run_id }}
-          path: .
+          path: ./bundled-web-app
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check if artifact was downloaded
         id: check_artifact

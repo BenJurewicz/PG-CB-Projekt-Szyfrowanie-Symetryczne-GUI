@@ -21,8 +21,8 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const workflow_id = 'check-for-build-errors.yaml'; // Replace with the filename of your build workflow
-            const branch = 'main';
+            const workflow_id = 'check-for-build-errors.yaml';
+            const branch = 'devel';
             
             const runs = await github.rest.actions.listWorkflowRunsForRepo({
               owner,

@@ -59,8 +59,7 @@ jobs:
           name: bundled-web-app
           run-id: ${{ steps.get_workflow_run_id.outputs.run_id }}
           path: ./bundled-web-app
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check if artifact was downloaded
         id: check_artifact

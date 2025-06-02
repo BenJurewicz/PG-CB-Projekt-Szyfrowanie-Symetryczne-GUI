@@ -50,5 +50,5 @@ jobs:
         with:
           name: bundled-web-app
           path: |
-            web-app/
+            web-app
           retention-days: 1

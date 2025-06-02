@@ -45,15 +45,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Debug: List artifacts for the found run ID'
-        run: |
-          gh run view ${{ steps.get_workflow_run_id.outputs.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Download build artifacts
         id: download_artifact
-        #run: gh run download ${{ steps.get_workflow_run_id.outputs.run_id }} --name bundled-web-app --dir bundled-web-app
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: bundled-web-app
@@ -111,7 +105,7 @@ jobs:
         run: |
           if [ -d "bundled-web-app" ]; then
             echo "Using downloaded build for deployment."
-            cp -R bundled-web-app/* web-app/
+            cp -R bundled-web-app/ web-app/
           else
             echo "Using freshly built application for deployment."
           fi

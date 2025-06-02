@@ -15,11 +15,41 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
 
+      - name: Get latest successful build workflow run ID
+        id: get_workflow_run_id
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const workflow_id = 'check-for-build-errors.yaml'; // Replace with the filename of your build workflow
+            const branch = 'main';
+            
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner,
+              repo,
+              workflow_id,
+              branch,
+              status: 'success',
+              per_page: 1,
+            });
+            
+            if (runs.data.workflow_runs.length === 0) {
+              core.setFailed(`No successful workflow runs found for workflow '${workflow_id}' on branch '${branch}'.`);
+              return;
+            }
+            
+            const latestRunId = runs.data.workflow_runs[0].id;
+            console.log(`Latest successful build workflow run ID: ${latestRunId}`);
+            core.setOutput('run_id', latestRunId);
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Download build artifacts
         id: download_artifact
         uses: actions/download-artifact@v4
         with:
           name: bundled-web-app
+          run-id: ${{ steps.get_workflow_run_id.outputs.run_id }}
 
       - name: Check if artifact was downloaded
         id: check_artifact

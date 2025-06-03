@@ -4,7 +4,7 @@
 # NOTE:
 # Uncomment when deploying to web
 # Comment for desktop and mobile
-base_path = "/szyfrowanie-symetryczne"
+#base_path = "/szyfrowanie-symetryczne"
 
 # HTML title tag content
 title = "cb-gui"

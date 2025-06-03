@@ -61,8 +61,7 @@ Run the following commands in the root of the project:
 
 ### For the Web:
 
-Deploy to the web:
-**Remember to uncomment the line `base_path = "/szyfrowanie-symetryczne"` in `Dioxus.toml` file** \
+**Remember to uncomment the line `base_path = "/szyfrowanie-symetryczne"` in `Dioxus.toml` file**
 
 ```bash
 npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css

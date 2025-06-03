@@ -1,50 +1,88 @@
-# Development
+# Symmetric Encryption
 
-Your new jumpstart project includes basic organization with an organized `assets` folder and a `components` folder.
-If you chose to develop with the router feature, you will also have a `views` folder.
+This is a Dioxus app that demonstrates diffrent symmetric encryption modes (ECB, CBC, CTR) using the AES algorithm.
+It allows users to encrypt and decrypt files and text using a password.
 
-```
-project/
-├─ assets/ # Any assets that are used by the app should be placed here
-├─ src/
-│  ├─ main.rs # The entrypoint for the app. It also defines the routes for the app.
-│  ├─ components/
-│  │  ├─ mod.rs # Defines the components module
-│  │  ├─ hero.rs # The Hero component for use in the home page
-│  ├─ views/ # The views each route will render in the app.
-│  │  ├─ mod.rs # Defines the module for the views route and re-exports the components for each route
-│  │  ├─ blog.rs # The component that will render at the /blog/:id route
-│  │  ├─ home.rs # The component that will render at the / route
-├─ Cargo.toml # The Cargo.toml file defines the dependencies and feature flags for your project
-```
+## Tech Stack
 
-### Tailwind
+- Lang: **Rust**
+- GUI Framework **Dioxus**: Rust framework similar to React, used for building cross-platform applications.
+- Styling: **Tailwind CSS**, **DaisyUI**
+- Encryption related libraries:
+    - **aes**: Advanced Encryption Standard for symmetric encryption.
+    - **ecb, cbc, ctr**: Crates implementing different modes of AES encryption.
+    - **PBKDF2**: Password-Based Key Derivation Function 2 for securely deriving keys from passwords.
+    - **sha2**: Neded for SHA-256 hashing, used in PBKDF2.
+- Other:
+    - **RFD**: Cross-platform file dialog library.
 
-1. Install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-2. Install the Tailwind CSS CLI: https://tailwindcss.com/docs/installation
-3. Run the following command in the root of the project to start the Tailwind CSS compiler:
+# Setup Instructions for Development
 
-```bash
-npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css --watch
-```
+## Prerequisites
 
-### Serving Your App
+1. [Rust](https://www.rust-lang.org/tools/install)
+2. [Dioxus](https://dioxuslabs.com/learn/0.6/getting_started/#) (Specifically, the Dioxus CLI)
+3. [Node.js](https://nodejs.org/en/download/) (for Tailwind CSS)
 
-Run the following command in the root of your project to start developing with the default platform:
+## Project Setup
+
+1. Clone the repository
+2. In the project root, run the following command to install necessary dependencies:
 
 ```bash
-dx serve
+npm install
 ```
 
-To run for a different platform, use the `--platform platform` flag. E.g.
+(Cargo Dependencies will be installed automatically when you run the app for the first time)
 
-```bash
-dx serve --platform desktop
-```
+## Development
+
+Run the following commands in the root of the project:
+
+-
+    1. Start the Tailwind CSS watcher to automatically recompile styles when changes are made:
+       ```bash
+       npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css --watch
+       ```
+-
+    2. Start the Dioxus development server:
+
+    - For Web:
+      ```bash
+      dx serve --platform web --hot-reload true
+      ```
+
+    - For Desktop:
+      ```bash
+      dx serve --platform desktop --hot-reload true
+      ```
+
+## Building for Production
+
+### For the Web:
 
 Deploy to the web:
 **Remember to uncomment the line `base_path = "/szyfrowanie-symetryczne"` in `Dioxus.toml` file** \
 
 ```bash
+npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css
+```
+
+```bash
 dx bundle --platform web --out-dir web-app
+```
+
+### For Desktop:
+
+<!-- TODO: Double check if everything is correct in the desktop sections -->
+**Remember to make sure the line `base_path = "/szyfrowanie-symetryczne"` in `Dioxus.toml` file \
+is commented out.**
+\
+
+```bash
+npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css
+```
+
+```bash
+dx bundle --platform desktop --out-dir desktop-app
 ```

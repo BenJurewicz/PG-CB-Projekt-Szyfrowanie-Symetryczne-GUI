@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use crate::EXCHANGE_SVG;
 
 #[component]
 pub fn Text() -> Element {
@@ -12,11 +13,12 @@ pub fn Text() -> Element {
             class: "text-center mb-4",
             "Encrypt and decrypt text using AES encryption in different modes."
         }
+        p {
+            class: "text-center mb-4",
+            "Select an encryption mode and enter text to encrypt."
+        }
         div {
-            p {
-                class: "text-center mb-4",
-                "Select an encryption mode and enter text to encrypt."
-            }
+            class: "flex items-left mx-auto ml-40 mb-8 mt-20 sm:px-8 lg:px-16",
             input {
                 type: "radio",
                 name: "encryption_mode",
@@ -27,7 +29,7 @@ pub fn Text() -> Element {
             }
             label {
                 for: "ecb",
-                class: "label cursor-pointer",
+                class: "label cursor-pointer mx-4 text-white",
                 "ECB Mode"
             }
             input {
@@ -39,7 +41,7 @@ pub fn Text() -> Element {
             }
             label {
                 for: "cbc",
-                class: "label cursor-pointer",
+                class: "label cursor-pointer mx-4 text-white",
                 "CBC Mode"
             }
             input {
@@ -51,23 +53,39 @@ pub fn Text() -> Element {
             }
             label {
                 for: "ctr",
-                class: "label cursor-pointer",
+                class: "label cursor-pointer mx-4 text-white",
                 "CTR Mode"
             }
         }
 
-
-
-        textarea {
-            class: "textarea textarea-bordered w-full max-w-lg mx-auto",
-            placeholder: "Enter text to encrypt...",
-            rows: 10,
+        div {
+            class: "mx-auto ml-55 my-8",
+            input {
+                type: "password",
+                id: "pwd",
+                name: "pwd",
+                class: "input input-bordered", // Optional Tailwind CSS class for styling
+                placeholder: "Password", // Label text inside the textbox
+            }
         }
 
-        textarea {
-            class: "textarea textarea-bordered w-full max-w-lg mx-auto mt-4",
-            placeholder: "Encrypted text will appear here...",
-            rows: 10,
+        div {
+            class: "flex items-center justify-between w-full mx-auto px-4 sm:px-8 lg:px-16",
+            textarea {
+                class: "textarea textarea-bordered w-1/2 ml-40",
+                placeholder: "Enter text to encrypt...",
+                rows: 10,
+            }
+            img {
+                src: "{EXCHANGE_SVG}",
+                alt : "Exchange Icon",
+                class: "mx-4 w-8 h-8",
+            }
+            textarea {
+                class: "textarea textarea-bordered w-1/2 mr-40",
+                placeholder: "Enter text to decrypt here...",
+                rows: 10,
+            }
         }
     }
 }

@@ -104,14 +104,14 @@ pub fn File() -> Element {
                     class: "fieldset landscape:grid-flow-col bg-base-200 border-base-300 rounded-box w-xs border portrait:mx-auto",
                     legend {
                         class: "fieldset-legend",
-                        "Select encryption mode"
+                        "Select decryption mode"
                     }
                         label {
                             for: "ecb",
                             class: "label cursor-pointer mx-4 text-primary-content text-base",
                             input {
                                 type: "radio",
-                                name: "encryption_mode",
+                                name: "decryption_mode",
                                 id: "ecb",
                                 class: "radio radio-primary m-1",
                                 value: "ECB",
@@ -124,7 +124,7 @@ pub fn File() -> Element {
                             class: "label cursor-pointer mx-4 text-primary-content text-base",
                             input {
                                 type: "radio",
-                                name: "encryption_mode",
+                                name: "decryption_mode",
                                 id: "cbc",
                                 class: "radio radio-primary m-1",
                                 value: "CBC"
@@ -136,7 +136,7 @@ pub fn File() -> Element {
                             class: "label cursor-pointer mx-4 text-primary-content text-base",
                             input {
                                 type: "radio",
-                                name: "encryption_mode",
+                                name: "decryption_mode",
                                 id: "ctr",
                                 class: "radio radio-primary m-1",
                                 value: "CTR"

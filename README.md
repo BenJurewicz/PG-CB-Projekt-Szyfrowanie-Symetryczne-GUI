@@ -49,7 +49,7 @@ Run the following commands in the root of the project:
 
     - For Web:
       ```bash
-      dx serve --platform web --hot-reload true
+      RUSTFLAGS='--cfg getrandom_backend="wasm_js"' dx serve --platform web --hot-reload true
       ```
 
     - For Desktop:

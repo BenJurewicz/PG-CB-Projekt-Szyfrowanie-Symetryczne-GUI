@@ -14,49 +14,52 @@ pub fn Text() -> Element {
             "Encrypt and decrypt text using AES encryption in different modes."
         }
         div {
-            class: "w-full flex-col max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 landscape:mt-20",
-            p {
-                class: "portrait:text-center mb-4",
-                "Select encryption mode:"
-            }
-            div {
-                class: "flex flex-row items-center justify-start mb-4 portrait:justify-center max-[380px]:flex-col max-[376px]:gap-4",
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "ecb",
-                    class: "radio radio-primary",
-                    value: "ECB",
-                    checked: true
+            class: "flex-col max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 landscape:mt-20",
+            fieldset {
+                class: "border-2 border-base-300 rounded-2xl px-4 py-2 mb-6 landscape:w-1/2 max-w-[530px] portrait:mx-auto",
+                legend {
+                    class: "font-semibold text-primary-content px-2",
+                    "Select encryption mode"
                 }
-                label {
-                    for: "ecb",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "ECB Mode"
-                }
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "cbc",
-                    class: "radio radio-primary",
-                    value: "CBC"
-                }
-                label {
-                    for: "cbc",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "CBC Mode"
-                }
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "ctr",
-                    class: "radio radio-primary",
-                    value: "CTR"
-                }
-                label {
-                    for: "ctr",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "CTR Mode"
+                div {
+                    class: "flex flex-row items-center justify-start gap-4 portrait:justify-center max-[380px]:flex-col max-[376px]:gap-4 mb-2",
+                    input {
+                        type: "radio",
+                        name: "encryption_mode",
+                        id: "ecb",
+                        class: "radio radio-primary",
+                        value: "ECB",
+                        checked: true
+                    }
+                    label {
+                        for: "ecb",
+                        class: "label cursor-pointer mx-4 text-primary-content",
+                        "ECB Mode"
+                    }
+                    input {
+                        type: "radio",
+                        name: "encryption_mode",
+                        id: "cbc",
+                        class: "radio radio-primary",
+                        value: "CBC"
+                    }
+                    label {
+                        for: "cbc",
+                        class: "label cursor-pointer mx-4 text-primary-content",
+                        "CBC Mode"
+                    }
+                    input {
+                        type: "radio",
+                        name: "encryption_mode",
+                        id: "ctr",
+                        class: "radio radio-primary",
+                        value: "CTR"
+                    }
+                    label {
+                        for: "ctr",
+                        class: "label cursor-pointer mx-4 text-primary-content",
+                        "CTR Mode"
+                    }
                 }
             }
 
@@ -67,7 +70,7 @@ pub fn Text() -> Element {
                     class: "flex flex-col w-full landscape:w-1/2 max-w-[530px]",
                     label {
                         for: "pwd",
-                        class: "mb-2 text-white",
+                        class: "mb-2 text-primary-content",
                         "Password:"
                     }
                     input {
@@ -79,7 +82,7 @@ pub fn Text() -> Element {
                     }
                     label {
                         for: "encrypt-text",
-                        class: "mb-1 text-white",
+                        class: "mb-1 text-primary-content",
                         "Text to encrypt:"
                     }
                     textarea {

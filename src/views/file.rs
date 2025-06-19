@@ -16,30 +16,31 @@ pub fn File() -> Element {
     rsx! {
         h1 {
             class: "text-4xl font-bold text-center my-8",
-            "File Upload and Download Example"
+            "File Encryption and Decryption"
         }
-
         div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Encrypted File"
+            class: "flex landscape:flex-row portrait:flex-col justify-center gap-4",
+            div {
+                class: "border-3 border-base-300 rounded-lg p-4 m-4",
+                p {
+                    class: "text-center mb-4",
+                    "Encrypt File"
+                }
+                FileCard {
+                    file: encrypted_file
+                }
             }
-            FileCard {
-                file: encrypted_file
+
+            div {
+                class: "border-3 border-base-300 rounded-lg p-4 m-4",
+                p {
+                    class: "text-center mb-4",
+                    "Decrypt File"
+                }
+                FileCard {
+                    file: decrypted_file
+                }
             }
         }
-
-        div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Decrypted File"
-            }
-            FileCard {
-                file: decrypted_file
-            }
-        }
-
     }
 }

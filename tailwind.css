@@ -60,5 +60,5 @@
 }
 
 #rfd-input {
-    @apply file-input file-input-primary file-input-ghost;
+    @apply file-input file-input-secondary file-input-ghost;
 }

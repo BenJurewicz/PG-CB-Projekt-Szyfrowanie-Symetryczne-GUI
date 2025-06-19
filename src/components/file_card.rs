@@ -35,27 +35,29 @@ pub fn FileCard(file: Signal<Option<FileData>>) -> Element {
                 FileDetails {file: file.unwrap()}
             }
         }
+        div {
+            class: "flex flex-row justify-center items-center h-16",
+            button {
+                class: "btn btn-primary ml-4",
+                onclick: move |_| async move {
+                    if let Some(f) = read_file().await {
+                        file.set(Some(f));
+                    }
+                },
+                "Upload File"
+            }
 
-        button {
-            class: "btn btn-secondary ml-4",
-            onclick: move |_| async move {
-                if let Some(f) = read_file().await {
-                    file.set(Some(f));
-                }
-            },
-            "Upload File"
-        }
-
-        button {
-            class: "btn btn-accent ml-4",
-            onclick: move |_| async move {
-                let file_cpy = file();
-                if let Some(f) = file_cpy {
-                    save_file(&f).await;
-                }
-            },
-            disabled: file.read().is_none(),
-            "Download File"
+            button {
+                class: "btn btn-accent ml-4",
+                onclick: move |_| async move {
+                    let file_cpy = file();
+                    if let Some(f) = file_cpy {
+                        save_file(&f).await;
+                    }
+                },
+                disabled: file.read().is_none(),
+                "Download File"
+            }
         }
     }
 }

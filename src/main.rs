@@ -2,7 +2,7 @@
 // need dioxus
 use dioxus::prelude::*;
 
-use views::{File, Navbar, Text};
+use views::{File, Home, Navbar, Text};
 
 /// Define a components module that contains all shared components for our app.
 mod components;
@@ -27,7 +27,9 @@ enum Route {
         // The route attribute defines the URL pattern that a specific route matches. If that pattern matches the URL,
         // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
         // #[route("/")]
-        #[redirect("/", || Route::File {})]
+        #[route("/")]
+        Home {},
+
         #[route("/file")]
         File {},
 
@@ -38,6 +40,7 @@ enum Route {
 // We can import assets in dioxus with the `asset!` macro. This macro takes a path to an asset relative to the crate root.
 // The macro returns an `Asset` type that will display as the path to the asset in the browser or a local path in desktop bundles.
 const FAVICON: Asset = asset!("/assets/favicon.ico");
+const EXCHANGE_SVG: Asset = asset!("/assets/exchange.svg");
 // The asset macro also minifies some assets like CSS and JS to make bundled smaller
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 

@@ -2,6 +2,7 @@ name: PR's to Main should come only from devel
 
 on:
   pull_request:
+    types: [ opened, synchronize, reopened, edited ]
     branches:
       - main
 

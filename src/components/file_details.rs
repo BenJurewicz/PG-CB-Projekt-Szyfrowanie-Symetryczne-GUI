@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 pub fn FileDetails(file: FileData) -> Element {
     rsx! {
         div {
-            class: "card card-border bg-base-300 m-4 max-w-full md:max-w-2xl",
+            class: "card card-border bg-base-300 m-4 max-w-full md:max-w-2xl mx-auto",
             div {
                 class: "card-body p-4",
                 span { class: "card-title text-primary-content flex justify-between items-center",
@@ -17,8 +17,8 @@ pub fn FileDetails(file: FileData) -> Element {
                     class: "mt-2",
                     label { class: "font-semibold text-sm", "Text content:" }
                     div {
-                        class: "bg-base-200 rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
-                        pre { class: "text-wrap text-secondary whitespace-pre-wrap", "{file.content_as_string()}" }
+                        class: "rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
+                        pre { class: "text-wrap text-primary-content whitespace-pre-wrap", "{file.content_as_string()}" }
                     }
                 }
 
@@ -26,8 +26,8 @@ pub fn FileDetails(file: FileData) -> Element {
                     class: "collapse collapse-arrow bg-base-100 border-base-300 border",
                     summary { class: "collapse-title font-semibold", "Hex View" }
                     div {
-                        class: "bg-base-200 rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
-                        pre { class: "text-wrap text-accent break-all", "{file.bin_as_hex_string()}" }
+                        class: "rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
+                        pre { class: "text-wrap text-primary-content break-all", "{file.bin_as_hex_string()}" }
                     }
                 }
             }

@@ -19,9 +19,9 @@ pub fn File() -> Element {
             "File Encryption and Decryption"
         }
         div {
-            class: "flex landscape:flex-row portrait:flex-col justify-center gap-4",
+            class: "flex landscape:flex-row portrait:flex-col justify-center gap-4 landscape:mx-10 landscape:mt-25",
             div {
-                class: "border-3 border-base-300 rounded-lg p-4 m-4",
+                class: "flex-1 min-w-0 border-3 border-base-300 rounded-lg p-4 m-4",
                 p {
                     class: "text-center mb-4",
                     "Encrypt File"
@@ -32,7 +32,7 @@ pub fn File() -> Element {
             }
 
             div {
-                class: "border-3 border-base-300 rounded-lg p-4 m-4",
+                class: "flex-1 min-w-0 border-3 border-base-300 rounded-lg p-4 m-4",
                 p {
                     class: "text-center mb-4",
                     "Decrypt File"

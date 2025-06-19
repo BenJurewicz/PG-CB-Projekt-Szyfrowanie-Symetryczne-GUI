@@ -38,7 +38,7 @@ pub fn FileCard(file: Signal<Option<FileData>>) -> Element {
         div {
             class: "flex flex-row justify-center items-center h-16",
             button {
-                class: "btn btn-primary ml-4",
+                class: "btn bg-primary ml-4",
                 onclick: move |_| async move {
                     if let Some(f) = read_file().await {
                         file.set(Some(f));
@@ -48,7 +48,7 @@ pub fn FileCard(file: Signal<Option<FileData>>) -> Element {
             }
 
             button {
-                class: "btn btn-accent ml-4",
+                class: "btn bg-violet-500 ml-4",
                 onclick: move |_| async move {
                     let file_cpy = file();
                     if let Some(f) = file_cpy {

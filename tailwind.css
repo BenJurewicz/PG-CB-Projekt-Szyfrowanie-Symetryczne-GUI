@@ -51,14 +51,14 @@
 }
 
 #rfd-output {
-    @apply btn btn-primary text-xl capitalize;
+    @apply btn bg-violet-500 text-xl capitalize;
 }
 
 #rfd-button {
-    @apply btn btn-soft btn-secondary text-xl;
+    @apply btn btn-soft btn-primary text-xl;
     width: 5rem !important;
 }
 
 #rfd-input {
-    @apply file-input file-input-secondary file-input-ghost;
+    @apply file-input bg-violet-500 file-input-ghost;
 }

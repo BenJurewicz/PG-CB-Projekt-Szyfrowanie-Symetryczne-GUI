@@ -98,7 +98,7 @@ pub fn Text() -> Element {
                 img {
                     src: "{EXCHANGE_SVG}",
                     alt: "Exchange Icon",
-                    class: "w-8 h-8 landscape:mx-8 portrait:my-2 portrait:mt-8 portrait:rotate-90",
+                    class: "w-8 h-8 landscape:mx-8 landscape:mt-10 portrait:my-2 portrait:mt-8 portrait:rotate-90",
                 }
                 // RIGHT COLUMN
                 div {

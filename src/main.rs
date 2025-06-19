@@ -2,7 +2,7 @@
 // need dioxus
 use dioxus::prelude::*;
 
-use views::{File, Navbar, Text};
+use views::{File, Home, Navbar, Text};
 
 /// Define a components module that contains all shared components for our app.
 mod components;
@@ -27,7 +27,9 @@ enum Route {
         // The route attribute defines the URL pattern that a specific route matches. If that pattern matches the URL,
         // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
         // #[route("/")]
-        #[redirect("/", || Route::File {})]
+        #[route("/")]
+        Home {},
+
         #[route("/file")]
         File {},
 

@@ -1,8 +1,6 @@
 use crate::components::FileCard;
 use crate::types::FileData;
-use dioxus::logger::tracing;
 use dioxus::prelude::*;
-use rfd::AsyncFileDialog;
 
 #[component]
 pub fn File() -> Element {

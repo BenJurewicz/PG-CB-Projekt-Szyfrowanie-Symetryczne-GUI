@@ -7,7 +7,7 @@ use sha2::Sha256;
 use aes::cipher::KeyInit;
 use ctr::cipher::KeyIvInit;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub enum CipherMode {
     Ecb,
     Cbc,
@@ -67,11 +67,7 @@ struct PasswordData {
 
 impl PasswordData {
     fn new(password: &str, salt: [u8; 16]) -> PasswordData {
-        let derived_key = pbkdf2_hmac_array::<Sha256, 32>(
-            password.as_bytes(),
-            &salt,
-            1000
-        );
+        let derived_key = pbkdf2_hmac_array::<Sha256, 32>(password.as_bytes(), &salt, 1000);
 
         let mut key = [0u8; 16];
         let mut iv = [0u8; 16];
@@ -80,11 +76,7 @@ impl PasswordData {
         key.copy_from_slice(&derived_key[0..16]);
         iv.copy_from_slice(&derived_key[16..32]);
 
-        PasswordData {
-            key,
-            iv,
-            salt,
-        }
+        PasswordData { key, iv, salt }
     }
 
     fn new_for_encrypt(password: &str) -> PasswordData {
@@ -104,7 +96,7 @@ struct EncryptedData {
 }
 
 impl EncryptedData {
-    fn new(mode: CipherMode, salt: [u8;16], raw_data: &[u8]) -> Self {
+    fn new(mode: CipherMode, salt: [u8; 16], raw_data: &[u8]) -> Self {
         EncryptedData {
             mode,
             salt,
@@ -130,7 +122,9 @@ impl TryFrom<Vec<u8>> for EncryptedData {
 
     fn try_from(raw_data: Vec<u8>) -> Result<Self, Self::Error> {
         if raw_data.len() < 17 {
-            return Err("Raw data for is too short to contain mode, salt and some data".to_string());
+            return Err(
+                "Raw data for is too short to contain mode, salt and some data".to_string(),
+            );
         }
 
         let mode = CipherMode::try_from(raw_data[0])?;
@@ -140,19 +134,14 @@ impl TryFrom<Vec<u8>> for EncryptedData {
 
         let data = raw_data[17..].to_vec();
 
-        Ok(EncryptedData {
-            mode,
-            salt,
-            data
-        })
+        Ok(EncryptedData { mode, salt, data })
     }
 }
 
 fn encrypt_ecb(pd: PasswordData, data: &[u8]) -> Vec<u8> {
     type Aes128EcbEnc = ecb::Encryptor<aes::Aes128>;
 
-    Aes128EcbEnc::new(&pd.key.into())
-        .encrypt_padded_vec_mut::<Pkcs7>(data)
+    Aes128EcbEnc::new(&pd.key.into()).encrypt_padded_vec_mut::<Pkcs7>(data)
 }
 
 fn decrypt_ecb(pd: PasswordData, data: &[u8]) -> Result<Vec<u8>, String> {
@@ -166,8 +155,7 @@ fn decrypt_ecb(pd: PasswordData, data: &[u8]) -> Result<Vec<u8>, String> {
 fn encrypt_cbc(pd: PasswordData, data: &[u8]) -> Vec<u8> {
     type Aes128CbcEnc = cbc::Encryptor<aes::Aes128>;
 
-    Aes128CbcEnc::new(&pd.key.into(), &pd.iv.into())
-        .encrypt_padded_vec_mut::<Pkcs7>(data)
+    Aes128CbcEnc::new(&pd.key.into(), &pd.iv.into()).encrypt_padded_vec_mut::<Pkcs7>(data)
 }
 
 fn decrypt_cbc(pd: PasswordData, data: &[u8]) -> Result<Vec<u8>, String> {

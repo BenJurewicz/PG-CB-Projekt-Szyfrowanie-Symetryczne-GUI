@@ -8,10 +8,18 @@ pub fn Textarea(
     placeholder: String,
     text: Signal<String>,
     class: Option<String>,
+    textarea_class: Option<String>,
     oninput: Option<Callback<Event<FormData>, ()>>,
+    onclick: Option<Callback>,
 ) -> Element {
     rsx! {
         div {
+            onclick: move |_| {
+                if let Some(c) = onclick {
+                    c.call(());
+                }
+            },
+
             class: format!("flex flex-col w-full landscape:w-1/2 max-w-[530px] {}",
                 class.unwrap_or_default()),
 
@@ -23,7 +31,8 @@ pub fn Textarea(
 
             textarea {
                 id: textarea_id.clone(),
-                class: "textarea textarea-bordered w-full font-mono text-base",
+                class: format!("textarea textarea-bordered w-full font-mono text-base {}",
+                    textarea_class.unwrap_or_default()),
                 placeholder: placeholder,
                 rows: 10,
 

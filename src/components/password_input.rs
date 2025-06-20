@@ -13,7 +13,7 @@ pub fn PasswordInput(password: Signal<String>, class: Option<String>) -> Element
                 type: "text",
                 id: "pwd",
                 name: "pwd",
-                class: "input input-secondary text-base w-full",
+                class: "input input-primary text-base w-full",
                 placeholder: "Enter your password",
                 oninput: move |e| {
                     password.set(e.value().clone());

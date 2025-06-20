@@ -27,7 +27,7 @@ enum Route {
         // The route attribute defines the URL pattern that a specific route matches. If that pattern matches the URL,
         // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
         // #[route("/")]
-        #[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
+        #[redirect("/:.._segments", |_segments: Vec<String>| Route::Home {})]
         #[route("/")]
         Home {},
 

@@ -27,7 +27,7 @@ pub fn FileDetails(file: FileData) -> Element {
                     summary { class: "collapse-title font-semibold", "Hex View" }
                     div {
                         class: "bg-base-200 rounded-md p-2 mt-1 max-h-60 overflow-y-auto",
-                        pre { class: "text-wrap text-accent break-all", "{file.bin_as_hex_string()}" }
+                        pre { class: "text-wrap text-center text-accent ", "{file.bin_as_hex_string()}" }
                     }
                 }
             }

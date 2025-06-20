@@ -5,7 +5,13 @@ use dioxus::logger::tracing;
 use dioxus::prelude::*;
 
 // Turn decrypted file into encrypted file
-fn turn_dec_into_enc_file(password: &str, mode: CipherMode, dec_file: &FileData) -> FileData {
+fn turn_dec_into_enc_file(
+    password: &str,
+    mode: CipherMode,
+    dec_file: &FileData,
+    mut invalid_encryption: Signal<bool>,
+) -> FileData {
+    invalid_encryption.set(false);
     let data = &dec_file.contents;
     let enc_data = encrypt_data(password, data, mode);
     let file_name = format!("{}.enc", dec_file.name);
@@ -14,17 +20,22 @@ fn turn_dec_into_enc_file(password: &str, mode: CipherMode, dec_file: &FileData)
 }
 
 // Turn encrypted file into decrypted file
-fn turn_enc_into_dec_file(password: &str, enc_file: &FileData) -> Option<FileData> {
+fn turn_enc_into_dec_file(
+    password: &str,
+    enc_file: &FileData,
+    mut invalid_encryption: Signal<bool>,
+) -> Option<FileData> {
     let data = &enc_file.contents;
 
     let decrypted = decrypt_data(password, data);
     if let Err(e) = decrypted {
         tracing::error!("Decryption failed: {}", e);
+        invalid_encryption.set(true);
         return None;
     }
     let decrypted = decrypted.unwrap();
     let file_name = enc_file.name.replace(".enc", "");
-
+    invalid_encryption.set(false);
     Some(FileData::new(file_name, decrypted))
 }
 
@@ -36,19 +47,22 @@ pub fn File() -> Element {
     let mode = use_signal(|| CipherMode::Ctr);
     let password = use_signal(String::new);
     let mut last_touched = use_signal(|| LastTouched::Encrypted);
+    let invalid_encryption = use_signal(|| false);
 
     use_effect(move || match *last_touched.read() {
         LastTouched::Encrypted => {
             if encrypted_file().is_some() {
                 let enc_file = encrypted_file().unwrap();
-                let dec_file = turn_enc_into_dec_file(&password.read(), &enc_file);
+                let dec_file =
+                    turn_enc_into_dec_file(&password.read(), &enc_file, invalid_encryption);
                 decrypted_file.set(dec_file);
             }
         }
         LastTouched::Decrypted => {
             if decrypted_file().is_some() {
                 let dec_file = decrypted_file().unwrap();
-                let enc_file = turn_dec_into_enc_file(&password.read(), mode(), &dec_file);
+                let enc_file =
+                    turn_dec_into_enc_file(&password.read(), mode(), &dec_file, invalid_encryption);
                 encrypted_file.set(Some(enc_file));
             }
         }
@@ -74,7 +88,9 @@ pub fn File() -> Element {
             class: "flex lg:flex-row items-center flex-col justify-center gap-4 landscape:mt-25",
 
             FileCard {
-                class: if last_touched() == LastTouched::Decrypted {
+                class:if invalid_encryption() {
+                    "border border-error"
+                } else if last_touched() == LastTouched::Decrypted{
                     "border border-secondary"
                 },
                 title: "Decrypted File",
@@ -101,7 +117,9 @@ pub fn File() -> Element {
             }
 
             FileCard {
-                class: if last_touched() == LastTouched::Encrypted {
+                class: if invalid_encryption() {
+                    "border border-error"
+                } else if last_touched() == LastTouched::Encrypted {
                     "border border-secondary"
                 },
                 title: "Encrypted File",

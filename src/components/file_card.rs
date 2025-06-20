@@ -86,6 +86,15 @@ pub fn FileCard(
                     disabled: file.read().is_none(),
                     "Download File"
                 }
+
+                button {
+                    class: "btn btn-error m-4 px-4",
+                    onclick: move |_| async move {
+                        file.set(None);
+                    },
+                    disabled: file.read().is_none(),
+                    "Clear"
+                }
             }
             }
     }

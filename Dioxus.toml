@@ -7,7 +7,7 @@
 #base_path = "/szyfrowanie-symetryczne"
 
 # HTML title tag content
-title = "cb-gui"
+title = "Szyfrowanie Symetryczne"
 
 # include `assets` in web platform
 [web.resource]

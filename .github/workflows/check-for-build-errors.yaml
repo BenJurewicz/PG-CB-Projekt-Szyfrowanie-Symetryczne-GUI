@@ -44,7 +44,7 @@ jobs:
         working-directory: ./
 
       - name: Compile and bundle the project
-        run: dx bundle --platform web --out-dir web-app
+        run: RUSTFLAGS='--cfg getrandom_backend="wasm_js"' dx bundle --platform web --out-dir web-app
         working-directory: ./
 
       - name: Upload build artifact

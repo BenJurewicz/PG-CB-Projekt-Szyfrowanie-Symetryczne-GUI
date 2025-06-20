@@ -1,5 +1,5 @@
 use crate::components::FileDetails;
-use crate::types::FileData;
+use crate::types::{DefaultView, FileData};
 use dioxus::logger::tracing;
 use dioxus::prelude::*;
 use rfd::AsyncFileDialog;
@@ -28,7 +28,12 @@ async fn save_file(file: &FileData) {
 }
 
 #[component]
-pub fn FileCard(title: String, file: Signal<Option<FileData>>) -> Element {
+pub fn FileCard(
+    title: String,
+    file: Signal<Option<FileData>>,
+    oninput: Option<Callback>,
+    default_view: DefaultView,
+) -> Element {
     rsx! {
         div {
             class: "border border-base-300 rounded-lg p-4 m-4 max-w-xl",
@@ -40,7 +45,10 @@ pub fn FileCard(title: String, file: Signal<Option<FileData>>) -> Element {
 
             div {
                 if file.read().is_some() {
-                    FileDetails {file: file.unwrap()}
+                    FileDetails {
+                        file: file.unwrap(),
+                        default_view: default_view,
+                    }
                 }
             }
 
@@ -50,6 +58,9 @@ pub fn FileCard(title: String, file: Signal<Option<FileData>>) -> Element {
                 button {
                     class: "btn btn-secondary my-4",
                     onclick: move |_| async move {
+                        if let Some(c) = oninput {
+                            c.call(());
+                        }
                         if let Some(f) = read_file().await {
                             file.set(Some(f));
                         }

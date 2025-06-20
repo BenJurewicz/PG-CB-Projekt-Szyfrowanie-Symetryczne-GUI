@@ -12,28 +12,29 @@ pub fn File() -> Element {
             class: "text-4xl font-bold text-center my-8",
             "File Upload and Download Example"
         }
-
         div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Encrypted File"
+            class: "flex-1 flex-row",
+            div {
+                class: "border border-base-300 rounded-lg p-4 m-4",
+                p {
+                    class: "text-center mb-4",
+                    "Encrypted File"
+                }
+                FileCard {
+                    file: encrypted_file
+                }
             }
-            FileCard {
-                file: encrypted_file
+
+            div {
+                class: "border border-base-300 rounded-lg p-4 m-4",
+                p {
+                    class: "text-center mb-4",
+                    "Decrypted File"
+                }
+                FileCard {
+                    file: decrypted_file
+                }
             }
         }
-
-        div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Decrypted File"
-            }
-            FileCard {
-                file: decrypted_file
-            }
-        }
-
     }
 }

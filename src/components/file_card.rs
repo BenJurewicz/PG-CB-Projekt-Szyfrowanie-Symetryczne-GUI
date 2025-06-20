@@ -28,34 +28,47 @@ async fn save_file(file: &FileData) {
 }
 
 #[component]
-pub fn FileCard(file: Signal<Option<FileData>>) -> Element {
+pub fn FileCard(title: String, file: Signal<Option<FileData>>) -> Element {
     rsx! {
         div {
-            if file.read().is_some() {
-                FileDetails {file: file.unwrap()}
+            class: "border border-base-300 rounded-lg p-4 m-4 max-w-xl",
+
+            p {
+                class: "text-center mb-4",
+                "{title}"
             }
-        }
 
-        button {
-            class: "btn btn-secondary ml-4",
-            onclick: move |_| async move {
-                if let Some(f) = read_file().await {
-                    file.set(Some(f));
+            div {
+                if file.read().is_some() {
+                    FileDetails {file: file.unwrap()}
                 }
-            },
-            "Upload File"
-        }
+            }
 
-        button {
-            class: "btn btn-accent ml-4",
-            onclick: move |_| async move {
-                let file_cpy = file();
-                if let Some(f) = file_cpy {
-                    save_file(&f).await;
+            div {
+                class: "flex justify-center items-center",
+
+                button {
+                    class: "btn btn-secondary my-4",
+                    onclick: move |_| async move {
+                        if let Some(f) = read_file().await {
+                            file.set(Some(f));
+                        }
+                    },
+                    "Upload File"
                 }
-            },
-            disabled: file.read().is_none(),
-            "Download File"
-        }
+
+                button {
+                    class: "btn btn-accent m-4",
+                    onclick: move |_| async move {
+                        let file_cpy = file();
+                        if let Some(f) = file_cpy {
+                            save_file(&f).await;
+                        }
+                    },
+                    disabled: file.read().is_none(),
+                    "Download File"
+                }
+            }
+            }
     }
 }

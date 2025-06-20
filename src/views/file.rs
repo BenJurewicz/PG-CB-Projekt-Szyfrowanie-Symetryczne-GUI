@@ -1,17 +1,15 @@
-use crate::components::FileCard;
+use crate::components::{CryptoOptions, ExchangeSVG, FileCard};
 use crate::types::FileData;
-use dioxus::logger::tracing;
+use crate::utils::CipherMode;
 use dioxus::prelude::*;
-use rfd::AsyncFileDialog;
 
 #[component]
 pub fn File() -> Element {
-    // TODO Instead of vec for files,
-    // TODO Have two variables: decrypted_file and encrypted_file
-    // let mut files_uploaded = use_signal(|| Vec::new() as Vec<FileData>);
-
     let decrypted_file: Signal<Option<FileData>> = use_signal(|| None);
     let encrypted_file: Signal<Option<FileData>> = use_signal(|| None);
+
+    let mode = use_signal(|| CipherMode::Ctr);
+    let password = use_signal(String::new);
 
     rsx! {
         h1 {
@@ -19,27 +17,38 @@ pub fn File() -> Element {
             "File Upload and Download Example"
         }
 
-        div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Encrypted File"
-            }
-            FileCard {
-                file: encrypted_file
-            }
+        p {
+            class: "text-center mb-4 portrait:mx-2",
+            "Encrypt and decrypt files using AES encryption in different modes."
         }
 
+        CryptoOptions{
+            mode: mode,
+            password: password,
+        }
+
+        // TODO
+        // button {
+        //     class: "btn btn-primary my-4",
+        //     "Decrypt File"
+        // }
+
         div {
-            class: "border border-base-300 rounded-lg p-4 m-4",
-            p {
-                class: "text-center mb-4",
-                "Decrypted File"
-            }
+            class: "flex lg:flex-row items-center flex-col justify-center gap-4 landscape:mt-25",
+
             FileCard {
+                title: "Encrypted File",
+                file: encrypted_file
+            }
+
+            ExchangeSVG {
+                class: "max-lg:rotate-90"
+            }
+
+            FileCard {
+                title: "Decrypted File",
                 file: decrypted_file
             }
         }
-
     }
 }

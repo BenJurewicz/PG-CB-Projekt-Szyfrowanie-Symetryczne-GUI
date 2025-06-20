@@ -5,5 +5,20 @@
 mod file_details;
 use file_details::FileDetails;
 
+mod crypto_options;
+pub use crypto_options::CryptoOptions;
+
+mod exchange_svg;
+pub use exchange_svg::ExchangeSVG;
+
+mod crypto_mode_select;
+pub use crypto_mode_select::CryptoModeSelect;
+
 mod file_card;
 pub use file_card::FileCard;
+
+mod textarea;
+pub use textarea::Textarea;
+
+mod password_input;
+pub use password_input::PasswordInput;

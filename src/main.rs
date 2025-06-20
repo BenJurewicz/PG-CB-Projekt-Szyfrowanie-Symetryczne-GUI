@@ -27,6 +27,7 @@ enum Route {
         // The route attribute defines the URL pattern that a specific route matches. If that pattern matches the URL,
         // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
         // #[route("/")]
+        #[redirect("/:..segments", |segments: Vec<String>| Route::Home {})]
         #[route("/")]
         Home {},
 
@@ -35,6 +36,7 @@ enum Route {
 
         #[route("/text")]
         Text {},
+
 }
 
 // We can import assets in dioxus with the `asset!` macro. This macro takes a path to an asset relative to the crate root.

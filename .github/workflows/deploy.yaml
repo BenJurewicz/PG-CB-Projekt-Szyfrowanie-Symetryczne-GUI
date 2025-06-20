@@ -101,7 +101,7 @@ jobs:
 
       - name: Compile and bundle the project
         if: steps.check_artifact.outputs.build_found == 'false'
-        run: dx bundle --platform web --out-dir web-app
+        run: RUSTFLAGS='--cfg getrandom_backend="wasm_js"' dx bundle --platform web --out-dir web-app
         working-directory: ./
 
       - name: Prepare for deployment

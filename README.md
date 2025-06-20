@@ -49,7 +49,7 @@ Run the following commands in the root of the project:
 
     - For Web:
       ```bash
-      dx serve --platform web --hot-reload true
+      RUSTFLAGS='--cfg getrandom_backend="wasm_js"' dx serve --platform web --hot-reload true
       ```
 
     - For Desktop:
@@ -68,7 +68,7 @@ npx @tailwindcss/cli -i ./tailwind.css -o ./assets/tailwind.css
 ```
 
 ```bash
-dx bundle --platform web --out-dir web-app
+RUSTFLAGS='--cfg getrandom_backend="wasm_js"' dx bundle --platform web --out-dir web-app
 ```
 
 ### For Desktop:

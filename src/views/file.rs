@@ -41,14 +41,14 @@ pub fn File() -> Element {
         LastTouched::Encrypted => {
             if encrypted_file().is_some() {
                 let enc_file = encrypted_file().unwrap();
-                let dec_file = turn_enc_into_dec_file(&password(), &enc_file);
+                let dec_file = turn_enc_into_dec_file(&password.read(), &enc_file);
                 decrypted_file.set(dec_file);
             }
         }
         LastTouched::Decrypted => {
             if decrypted_file().is_some() {
                 let dec_file = decrypted_file().unwrap();
-                let enc_file = turn_dec_into_enc_file(&password(), mode(), &dec_file);
+                let enc_file = turn_dec_into_enc_file(&password.read(), mode(), &dec_file);
                 encrypted_file.set(Some(enc_file));
             }
         }
@@ -74,26 +74,43 @@ pub fn File() -> Element {
             class: "flex lg:flex-row items-center flex-col justify-center gap-4 landscape:mt-25",
 
             FileCard {
+                class: if last_touched() == LastTouched::Decrypted {
+                    "border border-secondary"
+                },
                 title: "Decrypted File",
                 file: decrypted_file,
                 default_view: DefaultView::PlainText,
                 oninput: move |_| {
+                    last_touched.set(LastTouched::Decrypted)
+                },
+                onclick: move |_| {
                     last_touched.set(LastTouched::Decrypted)
                 }
             }
 
             button {
                 class: "btn btn-ghost h-20",
+                onclick: move |_| {
+                    // Marks signal last_touched as "dirty",
+                    // therefore, it will trigger the use_effect
+                    last_touched.write();
+                },
                 ExchangeSVG {
                     class: "max-lg:rotate-90"
                 }
             }
 
             FileCard {
+                class: if last_touched() == LastTouched::Encrypted {
+                    "border border-secondary"
+                },
                 title: "Encrypted File",
                 file: encrypted_file,
                 default_view: DefaultView::Hex,
                 oninput: move |_| {
+                    last_touched.set(LastTouched::Encrypted)
+                },
+                onclick: move |_| {
                     last_touched.set(LastTouched::Encrypted)
                 }
             }

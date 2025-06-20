@@ -14,49 +14,66 @@ pub fn Text() -> Element {
             "Encrypt and decrypt text using AES encryption in different modes."
         }
         div {
-            class: "w-full flex-col max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 landscape:mt-20",
-            p {
-                class: "portrait:text-center mb-4",
-                "Select encryption mode:"
-            }
+            class: "flex-col max-w-7xl mx-auto px-4 sm:px-8 lg:px-16 landscape:mt-20",
             div {
-                class: "flex flex-row items-center justify-start mb-4 portrait:justify-center max-[380px]:flex-col max-[376px]:gap-4",
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "ecb",
-                    class: "radio radio-primary",
-                    value: "ECB",
-                    checked: true
+                class: "flex portrait:flex-col landscape:gap-15 portrait:gap-4 justify-center portrait:items-center mb-4",
+                fieldset {
+                    class: "fieldset landscape:grid-flow-col bg-base-200 border-base-300 rounded-box w-xs border portrait:mx-auto",
+                    legend {
+                        class: "fieldset-legend",
+                        "Select encryption mode"
+                    }
+                        label {
+                            for: "ecb",
+                            class: "label cursor-pointer mx-4 text-primary-content text-base",
+                            input {
+                                type: "radio",
+                                name: "encryption_mode",
+                                id: "ecb",
+                                class: "radio radio-primary m-1",
+                                value: "ECB",
+                                checked: true
+                            }
+                            "ECB Mode"
+                        }
+                        label {
+                            for: "cbc",
+                            class: "label cursor-pointer mx-4 text-primary-content text-base",
+                            input {
+                                type: "radio",
+                                name: "encryption_mode",
+                                id: "cbc",
+                                class: "radio radio-primary m-1",
+                                value: "CBC"
+                            }
+                            "CBC Mode"
+                        }
+                        label {
+                            for: "ctr",
+                            class: "label cursor-pointer mx-4 text-primary-content text-base",
+                            input {
+                                type: "radio",
+                                name: "encryption_mode",
+                                id: "ctr",
+                                class: "radio radio-primary m-1",
+                                value: "CTR"
+                            }
+                            "CTR Mode"
+                        }
                 }
-                label {
-                    for: "ecb",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "ECB Mode"
-                }
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "cbc",
-                    class: "radio radio-primary",
-                    value: "CBC"
-                }
-                label {
-                    for: "cbc",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "CBC Mode"
-                }
-                input {
-                    type: "radio",
-                    name: "encryption_mode",
-                    id: "ctr",
-                    class: "radio radio-primary",
-                    value: "CTR"
-                }
-                label {
-                    for: "ctr",
-                    class: "label cursor-pointer mx-4 text-white",
-                    "CTR Mode"
+                fieldset {
+                    class: "fieldset max-w-1/2",
+                    legend {
+                        class: "fieldset-legend py-1.5",
+                        "Password"
+                    }
+                    input {
+                        type: "text",
+                        id: "pwd",
+                        name: "pwd",
+                        class: "input input-bordered text-base w-full",
+                        placeholder: "Enter your password",
+                    }
                 }
             }
 
@@ -66,20 +83,8 @@ pub fn Text() -> Element {
                 div {
                     class: "flex flex-col w-full landscape:w-1/2 max-w-[530px]",
                     label {
-                        for: "pwd",
-                        class: "mb-2 text-white",
-                        "Password:"
-                    }
-                    input {
-                        type: "text",
-                        id: "pwd",
-                        name: "pwd",
-                        class: "input input-bordered py-2 text-base w-full mb-4",
-                        placeholder: "Enter your password",
-                    }
-                    label {
                         for: "encrypt-text",
-                        class: "mb-1 text-white",
+                        class: "mb-1 text-primary-content",
                         "Text to encrypt:"
                     }
                     textarea {
@@ -93,19 +98,11 @@ pub fn Text() -> Element {
                 img {
                     src: "{EXCHANGE_SVG}",
                     alt: "Exchange Icon",
-                    class: "w-8 h-8 landscape:mx-8 landscape:mt-25 portrait:my-2 portrait:mt-8 portrait:rotate-90",
+                    class: "w-8 h-8 landscape:mx-8 landscape:mt-10 portrait:my-2 portrait:mt-8 portrait:rotate-90",
                 }
                 // RIGHT COLUMN
                 div {
                     class: "flex flex-col w-full landscape:w-1/2 max-w-[530px]",
-                    // Invisible placeholders for alignment
-                    label {
-                        class: "mb-2 invisible portrait:hidden",
-                        "Password:"
-                    }
-                    input {
-                        class: "input input-bordered py-2 text-base w-full mb-4 invisible portrait:hidden",
-                    }
                     label {
                         for: "decrypt-text",
                         class: "mb-1 text-white",

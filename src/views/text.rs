@@ -1,12 +1,8 @@
 use crate::components::{CryptoOptions, ExchangeSVG, Textarea};
+use crate::types::LastTouched;
 use crate::utils::{decrypt_data, encrypt_data, CipherMode};
 use dioxus::logger::tracing;
 use dioxus::prelude::*;
-
-enum LastTouched {
-    Encrypted,
-    Decrypted,
-}
 
 // Turn decrypted text into encrypted hex string
 fn turn_dec_into_enc(password: &str, mode: CipherMode, dec_text: &str) -> String {
@@ -93,7 +89,9 @@ pub fn Text() -> Element {
                     }
                 }
 
-                ExchangeSVG {}
+                ExchangeSVG {
+                    class: "m-10"
+                }
 
                 Textarea {
                     textarea_id: "decrypt-text",

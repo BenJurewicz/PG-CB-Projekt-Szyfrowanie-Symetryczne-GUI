@@ -10,9 +10,13 @@ impl FileData {
     }
 
     pub fn bin_as_hex_string(&self) -> String {
-        self.contents
-            .iter()
-            .map(|&byte| format!("0x{:02x}", byte))
+        let hexadecimal = hex::encode_upper(self.contents.clone());
+
+        hexadecimal
+            .chars()
+            .collect::<Vec<char>>()
+            .chunks(2)
+            .map(|chunk| chunk.iter().collect::<String>())
             .collect::<Vec<String>>()
             .join(" ")
     }

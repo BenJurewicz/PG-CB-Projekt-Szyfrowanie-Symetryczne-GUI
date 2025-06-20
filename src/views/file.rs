@@ -4,10 +4,6 @@ use dioxus::prelude::*;
 
 #[component]
 pub fn File() -> Element {
-    // TODO Instead of vec for files,
-    // TODO Have two variables: decrypted_file and encrypted_file
-    // let mut files_uploaded = use_signal(|| Vec::new() as Vec<FileData>);
-
     let decrypted_file: Signal<Option<FileData>> = use_signal(|| None);
     let encrypted_file: Signal<Option<FileData>> = use_signal(|| None);
 

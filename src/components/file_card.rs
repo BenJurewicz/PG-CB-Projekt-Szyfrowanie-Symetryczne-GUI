@@ -33,10 +33,17 @@ pub fn FileCard(
     file: Signal<Option<FileData>>,
     oninput: Option<Callback>,
     default_view: DefaultView,
+    class: Option<String>,
+    onclick: Option<Callback>,
 ) -> Element {
     rsx! {
         div {
-            class: "border border-base-300 rounded-lg p-4 m-4 max-w-xl",
+            onclick: move |_| {
+                if let Some(c) = onclick {
+                    c.call(());
+                }
+            },
+            class: format!("border border-base-300 rounded-lg p-4 m-4 max-w-xl {}", class.unwrap_or_default()),
 
             p {
                 class: "text-center mb-4",
